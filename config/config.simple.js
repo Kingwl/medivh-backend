@@ -7,4 +7,8 @@ module.exports = {
 
     // 测试数据库
     testDatabase: 'mongodb://localhost/database-name-test',
+
+    // 博客配置
+    title: 'Medivh',
+    keywords: [],
 }
