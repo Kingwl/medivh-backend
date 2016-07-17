@@ -14,6 +14,12 @@ const ArticleSchema = new Schema({
             ref: 'Reply',
         }
     ],
+    tag: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Tag',
+        }
+    ],
 
     isDelete: Boolean,
     readCount: Number,
