@@ -26,12 +26,12 @@
   "dependencies": {
     "bluebird": "^3.4.1",
     "koa": "^1.2.0",
+    "koa-json": "^1.1.3",
     "koa-logger": "^1.3.0",
     "koa-router": "^5.4.0",
     "koa-static": "^2.0.0",
     "mongoose": "^4.5.4",
-    "node-monkey": "^0.2.16",
-    "opener": "^1.4.1"
+    "node-monkey": "^0.2.16"
   },
   "devDependencies": {
     "chai": "^3.5.0",

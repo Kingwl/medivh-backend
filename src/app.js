@@ -3,7 +3,6 @@
 let env = process.env.NODE_ENV;
 if (env === 'development') {
     require('node-monkey').start({ host: "127.0.0.1", port:"50500" });
-    require("opener")('http://127.0.0.1:50500/');
 } 
 
 const fs = require('fs');
