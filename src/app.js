@@ -12,6 +12,7 @@ const mongoose = require('mongoose');
 const koa = require('koa');
 const json = require('koa-json');
 const logger = require('koa-logger');
+const bodyParser = require('koa-bodyparser');
 const app = koa();
 
 // connect database
@@ -28,6 +29,9 @@ app.use(json());
 
 // support request log
 app.use(logger());
+
+// support body data
+app.use(bodyParser());
 
 // import all routers
 fs.readdir(__dirname + '/router', (err, result) => {

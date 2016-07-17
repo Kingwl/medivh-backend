@@ -11,7 +11,7 @@ function register (app) {
     });
 
     router.post('/article', function* (next) {
-        let params = this.request.query;
+        let params = this.request.body;
         let newArticle = new Article({
             title: params.title || '',
             url: params.url || '',
