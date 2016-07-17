@@ -1,0 +1,44 @@
+{
+  "name": "medivh-backend",
+  "version": "1.0.0",
+  "description": "Medivh-backend是一个轻量级博客的服务端部分",
+  "main": "index.js",
+  "bin": {
+    "medivh-backend": "development.js"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "export NODE_ENV=test && mocha test/*",
+    "start": "export NODE_ENV=development && node bin/development.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kingwl/Medivh-backend.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kingwl/Medivh-backend/issues"
+  },
+  "homepage": "https://github.com/Kingwl/Medivh-backend#readme",
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "koa": "^1.2.0",
+    "koa-logger": "^1.3.0",
+    "koa-router": "^5.4.0",
+    "koa-static": "^2.0.0",
+    "mongoose": "^4.5.4",
+    "node-monkey": "^0.2.16",
+    "opener": "^1.4.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chokidar": "^1.6.0",
+    "mocha": "^2.5.3",
+    "request": "^2.73.0",
+    "supertest": "^1.2.0",
+    "supertest-koa-agent": "^0.2.1"
+  }
+}
