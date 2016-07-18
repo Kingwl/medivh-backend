@@ -1,6 +1,9 @@
 {
   "name": "medivh-backend",
   "version": "1.0.0",
+  "engines": {
+    "node": "6.3.0"
+  },
   "description": "Medivh-backend是一个轻量级博客的服务端部分",
   "main": "index.js",
   "bin": {
