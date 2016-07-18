@@ -15,8 +15,6 @@ function register(app) {
         let oldUser = yield User.find({ name });
         if (!oldUser) {
             let newUser = new User({
-                createTime: Date.now(),
-                updateTime: Date.now(),
                 name,
                 encrypted_password,
                 male,

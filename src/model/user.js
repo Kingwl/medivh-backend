@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    createTime: Date,
-    updateTime: Date,
+    createTime: { type: Date, default: Date.now },
+    updateTime: { type: Date, default: Date.now },
+    
     name: String,
     encrypted_password: String,
     male: Number,

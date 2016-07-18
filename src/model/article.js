@@ -2,8 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ArticleSchema = new Schema({
-    createTime: Date,
-    updateTime: Date,
+    createTime: { type: Date, default: Date.now },
+    updateTime: { type: Date, default: Date.now },
+
+    isDelete: { type: Boolean, default: false },
+    readCount: { type: Number, default: 0 },
 
     title: String,
     url: String,
@@ -12,17 +15,16 @@ const ArticleSchema = new Schema({
         {
             type: Schema.Types.ObjectId,
             ref: 'Reply',
+            default: []
         }
     ],
     tag: [
         {
             type: Schema.Types.ObjectId,
             ref: 'Tag',
+            default: []
         }
     ],
-
-    isDelete: Boolean,
-    readCount: Number,
 });
 
 const Article = mongoose.model('Article', ArticleSchema);

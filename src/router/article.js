@@ -16,11 +16,6 @@ function register(app) {
             title: params.title || '',
             url: params.url || '',
             content: params.content || '',
-            reply: [],
-            isDelete: false,
-            readCount: 0,
-            createTime: Date.now(),
-            updateTime: Date.now(),
         });
         yield newArticle.save();
         this.body = newArticle;
