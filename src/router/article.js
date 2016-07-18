@@ -2,11 +2,11 @@
 
 const router = require('koa-router')();
 const bluebird = require('bluebird');
-const Article = bluebird.promisifyAll(require('../model/article.js'), { suffix: 'Promise' });
+const Article = require('../model/article');
 
 function register (app) {
     router.get('/article', function* (next) {
-        let articles = yield Article.findPromise();
+        let articles = yield Article.find();
         this.body = articles;
     });
 
@@ -22,7 +22,7 @@ function register (app) {
             createTime: Date.now(),
             updateTime: Date.now(),
         });
-        yield bluebird.promisify(newArticle.save)();
+        yield newArticle.save();
         this.body = newArticle;
     });
 

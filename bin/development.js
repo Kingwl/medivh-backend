@@ -5,6 +5,9 @@ const cp = require('child_process');
 const chokidar = require('chokidar');
 const watcher = chokidar.watch(path.join(__dirname, '../src'));
 
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+
 let appIns = cp.fork(path.join(__dirname, '../src/app.js'));
 appIns.on('exit', code => {
     if (code === 10601) {
