@@ -3,7 +3,15 @@
 const router = require('koa-router')();
 
 function register(app) {
-    router.get('/file', function* (next) {
+    router.get('/auth', function* (next) {
+
+    });
+
+    router.post('/auth', function* (next) {
+
+    });
+
+    router.delete('/auth', function* (next) {
 
     });
 

@@ -4,7 +4,7 @@ const router = require('koa-router')();
 const bluebird = require('bluebird');
 const Article = require('../model/article');
 
-function register (app) {
+function register(app) {
     router.get('/article', function* (next) {
         let articles = yield Article.find();
         this.body = articles;
@@ -26,6 +26,29 @@ function register (app) {
         this.body = newArticle;
     });
 
+    router.get('/article/:id', function* (next) {
+
+    });
+
+    router.put('/article/:id', function* (next) {
+
+    });
+
+    router.delete('/article/:id', function* (next) {
+
+    });
+
+    router.get('/article/:id/reply', function* (next) {
+
+    });
+
+    router.post('/article/:id/reply', function* (next) {
+
+    });
+
+    router.get('/article/:id/tag', function* (next) {
+
+    });
 
     app.use(router.routes());
     app.use(router.allowedMethods());
