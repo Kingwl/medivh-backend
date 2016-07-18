@@ -3,6 +3,7 @@
 const router = require('koa-router')();
 const mongoose = require('mongoose');
 const Tag = require('../model/tag');
+const Article = require('../model/article');
 
 function register(app) {
     router.get('/tag', function* (next) {
@@ -20,7 +21,8 @@ function register(app) {
     router.get('/tag/:id', function* (next) {
         let {id} = this.params;
         let tag = yield Tag.findById(id);
-        this.body = tag;
+        let articles = yield tag.articles.map(id => Article.findById(id));
+        this.body = articles;
     });
 
     router.delete('/tag/:id', function* (next) {
