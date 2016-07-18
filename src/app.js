@@ -15,6 +15,9 @@ const logger = require('koa-logger');
 const bodyParser = require('koa-bodyparser');
 const app = koa();
 
+// use native Promise
+mongoose.Promise = global.Promise;
+
 // connect database
 mongoose.connect(env !== 'test' ? config.database : config.testDatabase, err => {
     if (err) {
@@ -23,6 +26,7 @@ mongoose.connect(env !== 'test' ? config.database : config.testDatabase, err => 
     }
     console.log('connect database success');
 });
+
 
 // support json type response
 app.use(json());
