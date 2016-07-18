@@ -1,22 +1,20 @@
-import Mongoose from 'mongoose';
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-class User extends Mongoose.Schema {
-    constructor() {
-        super({
-            createTime: Date,
-            updateTime: Date,
-            name: String,
-            encrypted_password: String,
-            male: Number,
-            age: Number,
-            articles: [
-                {
-                    type: this.Types.ObjectId,
-                    ref: 'Articles'
-                }
-            ]
-        })
-    }
-};
+const UserSchema = new Schema({
+    createTime: Date,
+    updateTime: Date,
+    name: String,
+    encrypted_password: String,
+    male: Number,
+    age: Number,
+    articles: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Articles'
+        }
+    ]
+});
 
-export default Mongoose.model('User', new User());
+const User = mongoose.model('User', UserSchema);
+module.exports = User;
