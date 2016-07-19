@@ -78,7 +78,8 @@ function register(app) {
         let article = yield Article.findById(id);
         this.assert(article, 404, 'article not exists');
 
-        yield article.remove();
+        article.isDelete = true;
+        yield article.save();
         this.end({
             status: 204,
         }); 
