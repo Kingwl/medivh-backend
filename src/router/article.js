@@ -35,7 +35,7 @@ function register(app) {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return this.end({
                 status: 400,
-                data: 'id is not valid',
+                data: 'id is invalid',
             });
         }
 
@@ -64,7 +64,7 @@ function register(app) {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return this.end({
                 status: 400,
-                data: 'id is not valid',
+                data: 'id is invalid',
             });
         }
 
@@ -91,7 +91,7 @@ function register(app) {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return this.end({
                 status: 400,
-                data: 'id is not valid',
+                data: 'id is invalid',
             });
         }
 
@@ -114,7 +114,7 @@ function register(app) {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return this.end({
                 status: 400,
-                data: 'id is not valid',
+                data: 'id is invalid',
             });
         }
 
@@ -138,7 +138,7 @@ function register(app) {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return this.end({
                 status: 400,
-                data: 'id is not valid',
+                data: 'id is invalid',
             });
         }
 
@@ -179,7 +179,7 @@ function register(app) {
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return this.end({
                 status: 400,
-                data: 'id is not valid',
+                data: 'id is invalid',
             });
         }
 
