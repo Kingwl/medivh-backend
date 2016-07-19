@@ -14,33 +14,20 @@ function register(app) {
 
     router.get('/recycle/:uid', function* (next) {
         let {uid} = this.params;
-        if (!mongoose.Types.ObjectId.isValid(uid)) {
-            return this.end({
-                status: 400,
-                data: 'uid is not valid',
-            });
-        }
+        this.assert(mongoose.Types.ObjectId.isValid(uid), 404, 'uid is invalid');
 
-        let user = yield User.findById(uid).populate({ path: 'articles' });
-        if (!user) {
-            return this.end({
-                status: 400,
-                data: `user ${uid} is not existed`,
-            });
-        }
+        let user = yield User.findById(uid).populate('articles');
+        this.assert(user, 404, `user ${uid} is not existed`);
 
-        let articles = user.articles.filter(x => x.isDelete);
-        this.body = articles;
+        this.end({
+            state: 200,
+            data: user.articles.filter(x => x.isDelete)
+        });
     });
 
     router.delete('/recycle/:uid', function* (next) {
         let {uid} = this.params;
-        if (!mongoose.Types.ObjectId.isValid(uid)) {
-            return this.end({
-                status: 400,
-                data: 'uid is not valid',
-            });
-        }
+        this.assert(mongoose.Types.ObjectId.isValid(uid), 404, 'uid is invalid');
 
         let user = yield User.findById(uid).populate({
             path: 'articles',
@@ -48,16 +35,11 @@ function register(app) {
                 path: 'tag',
             }
         });
-
-        if (!user) {
-            return this.end({
-                status: 400,
-                data: `user ${uid} is not existed`,
-            });
-        }
+        this.assert(user, 404, `user ${uid} is not existed`);
 
         let deletedArticle = user.articles.filter(x => x.isDelete);
         user.articles = user.articles.filter(x => !x.isDelete);
+
         for (let art of deletedArticle) {
             yield art.tag.map(tag => {
                 tag.article.splice(tag.article.findIndex(x => x == art._id));
@@ -68,17 +50,15 @@ function register(app) {
         };
         yield user.save();
 
-        this.body = {};
+        this.end({
+            state: 204,
+            data: {}
+        });
     });
 
     router.post('/recycle/:uid/remove/:id', function* (next) {
         let {uid, id} = this.params;
-        if (!mongoose.Types.ObjectId.isValid(uid) || !mongoose.Types.ObjectId.isValid(id)) {
-            return this.end({
-                status: 400,
-                data: 'uid or id is not valid',
-            });
-        }
+        this.assert(mongoose.Types.ObjectId.isValid(uid) && mongoose.Types.ObjectId.isValid(id), 404, 'uid or id is invalid');
 
         let user = yield User.findById(uid).populate({
             path: 'articles ',
@@ -86,14 +66,10 @@ function register(app) {
                 path: 'tag'
             }
         });
+        this.assert(user, 404, `user ${uid} is not existed`);
 
         let idx = user.articles.findIndex(x => x._id == id && x.isDelete);
-        if (idx === -1) {
-            return this.end({
-                status: 400,
-                data: `article ${id} not found`,
-            });
-        }
+        this.assert(idx !== -1, 404, `article ${id} not found`);
 
         let article = user.articles[idx];
         user.articles.splice(idx);
@@ -106,18 +82,27 @@ function register(app) {
         yield article.remove();
         yield user.save();
 
-        this.body = {};
+        this.end({
+            state: 204,
+            data: {}
+        });
     });
 
     router.post('/recycle/:uid/recovery/:id', function* (next) {
         let {uid, id} = this.params;
+        this.assert(mongoose.Types.ObjectId.isValid(uid) && mongoose.Types.ObjectId.isValid(id), 400, 'uid or id is invalid');
+
         let user = yield User.findById(uid).populate({ path: 'articles' });
         let article = user.articles.find(x => x._id == id && x.isDelete);
-        if (article) {
-            article.isDelete = false;
-            yield article.save();
-        }
-        this.body = article;
+        this.assert(article, 404, `article ${id} not found`);
+
+        article.isDelete = false;
+        yield article.save();
+
+        this.end({
+            state: 201,
+            data: article
+        });
     });
 
     app.use(router.routes());
