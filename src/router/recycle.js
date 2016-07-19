@@ -9,7 +9,10 @@ const Tag = require('../model/tag');
 function register(app) {
     router.get('/recycle', function* (next) {
         let articles = yield Article.find({ isDelete: true });
-        this.body = articles;
+        this.end({
+            state: 200,
+            data: articles
+        });
     });
 
     router.get('/recycle/:uid', function* (next) {
