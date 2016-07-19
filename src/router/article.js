@@ -3,6 +3,7 @@
 const router = require('koa-router')();
 const bluebird = require('bluebird');
 const Article = require('../model/article');
+const Reply = require('../model/reply');
 const mongoose = require('mongoose');
 
 function register(app) {
@@ -108,11 +109,68 @@ function register(app) {
     });
 
     router.get('/article/:id/reply', function* (next) {
+        let id = this.params.id;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return this.end({
+                status: 400,
+                data: 'id is not valid',
+            });
+        }
 
+        let article = yield Article.findById(id).populate('reply');
+        if (article === null) {
+            return this.end({
+                status: 404,
+                data: 'article not exists',
+            });
+        }
+
+        return this.end({
+            status: 200,
+            data: article.reply,
+        });
     });
 
     router.post('/article/:id/reply', function* (next) {
+        let { name, content, replyTo } = this.request.body;
+        let id = this.params.id;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return this.end({
+                status: 400,
+                data: 'id is not valid',
+            });
+        }
 
+        let article = yield Article.findById(id);
+        if (article === null) {
+            return this.end({
+                status: 404,
+                data: 'article not exists',
+            });
+        }
+
+        if (replyTo < 0 || replyTo > article.reply.length) {
+            return this.end({
+                status: 400,
+                data: 'invalid replyTo value',
+            });
+        }
+
+        let reply = new Reply({
+            name: name,
+            content: content,
+            index: article.reply.length + 1,
+            replyTo: replyTo,
+            article: article._id,
+        });
+        let newReply = yield reply.save();
+        article.reply.push(newReply._id);
+        yield article.save();
+
+        return this.end({
+            status: 201,
+            data: newReply,
+        });
     });
 
     router.get('/article/:id/tag', function* (next) {
