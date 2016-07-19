@@ -19,9 +19,9 @@ function register(app) {
     router.post('/article', function* (next) {
         let { title, url, content } = this.request.body;
         let newArticle = new Article({
-            title: title || '',
-            url: url || '',
-            content: content || '',
+            title: title,
+            url: url,
+            content: content,
         });
         yield newArticle.save();
         this.end({
