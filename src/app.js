@@ -50,7 +50,10 @@ app.use(function* (next) {
         }
 
         console.log('error --> ', message);
-        process.exit(1);
+        return this.end({
+            status: 500,
+            data: 'server error',
+        })
     }
 })
 

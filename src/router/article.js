@@ -67,7 +67,6 @@ function register(app) {
         }
 
         let article = yield Article.findById(id);
-        console.log(article);
         if (article === null) {
             return this.end({
                 status: 404,
@@ -86,7 +85,26 @@ function register(app) {
     });
 
     router.delete('/article/:id', function* (next) {
+        let id = this.params.id;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return this.end({
+                status: 400,
+                data: 'id is not valid',
+            });
+        }
 
+        let article = yield Article.findById(id);
+        if (article === null) {
+            return this.end({
+                status: 404,
+                data: 'article not exists',
+            });
+        }
+
+        yield article.remove();
+        this.end({
+            status: 204,
+        }); 
     });
 
     router.get('/article/:id/reply', function* (next) {
