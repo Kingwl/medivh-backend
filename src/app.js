@@ -14,6 +14,7 @@ const json = require('koa-json');
 const logger = require('koa-logger');
 const bodyParser = require('koa-bodyparser');
 const end = require('./util/response.js');
+const assert = require('./util/assert.js');
 const app = koa();
 
 // use native Promise
@@ -30,6 +31,9 @@ mongoose.connect(env !== 'test' ? config.database : config.testDatabase, err => 
 
 // provide this.end() function
 app.use(end);
+
+// provide this.assert() function
+app.use(assert);
 
 // support request log
 app.use(logger());
