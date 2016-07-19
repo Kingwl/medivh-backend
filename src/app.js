@@ -48,6 +48,9 @@ app.use(function* (next) {
                 data: message,
             });
         }
+        else if (message === 'assert check fail') {
+            return;
+        }
 
         console.log('error --> ', message);
         return this.end({
