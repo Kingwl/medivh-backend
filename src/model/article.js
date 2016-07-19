@@ -8,9 +8,9 @@ const ArticleSchema = new Schema({
     isDelete: { type: Boolean, default: false },
     readCount: { type: Number, default: 0 },
 
-    title: String,
-    url: String,
-    content: String,
+    title: { type: String, default: '' },
+    url: { type: String, default: '' },
+    content: { type: String, default: '' },
     reply: [
         {
             type: Schema.Types.ObjectId,
