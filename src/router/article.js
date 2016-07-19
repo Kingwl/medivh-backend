@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 function register(app) {
     router.get('/article', function* (next) {
         let articles = yield Article.find();
-        this.end({ 
+        this.end({
             status: 200,
             data: articles,
         });
@@ -39,7 +39,7 @@ function register(app) {
         if (article) {
             article.readCount++;
             yield article.save();
-            
+
             this.end({
                 status: 200,
                 data: article,
@@ -61,9 +61,8 @@ function register(app) {
         let article = yield Article.findById(id);
         this.assert(article, 404, 'article not exists');
 
-        article.title = title || article.title;
-        article.url = url || article.url;
-        article.content = content || article.content;
+        article = Object.assign(article, { title, url, content });
+
         let updatedArticle = yield article.save();
         this.end({
             status: 201,
@@ -82,7 +81,7 @@ function register(app) {
         yield article.save();
         this.end({
             status: 204,
-        }); 
+        });
     });
 
     router.get('/article/:id/reply', function* (next) {
@@ -108,10 +107,10 @@ function register(app) {
         this.assert(replyTo >= 0 && replyTo <= article.reply.length, 400, 'invalid replyTo value');
 
         let reply = new Reply({
-            name: name,
-            content: content,
+            name,
+            content,
+            replyTo,
             index: article.reply.length + 1,
-            replyTo: replyTo,
             article: article._id,
         });
         let newReply = yield reply.save();
@@ -143,7 +142,7 @@ function register(app) {
         this.assert(mongoose.Types.ObjectId.isValid(id), 400, 'id is invalid');
 
         if (!Array.isArray(tagId)) {
-            tagId = [ tagId ];
+            tagId = [tagId];
         }
 
         let article = yield Article.findById(id);
@@ -172,7 +171,7 @@ function register(app) {
         this.assert(mongoose.Types.ObjectId.isValid(id), 400, 'id is invalid');
 
         if (!Array.isArray(tagId)) {
-            tagId = [ tagId ];
+            tagId = [tagId];
         }
 
         let article = yield Article.findById(id);
