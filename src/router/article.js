@@ -4,6 +4,7 @@ const router = require('koa-router')();
 const bluebird = require('bluebird');
 const Article = require('../model/article');
 const Reply = require('../model/reply');
+const Tag = require('../model/tag');
 const mongoose = require('mongoose');
 
 function register(app) {
@@ -174,7 +175,130 @@ function register(app) {
     });
 
     router.get('/article/:id/tag', function* (next) {
+        let id = this.params.id;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return this.end({
+                status: 400,
+                data: 'id is not valid',
+            });
+        }
 
+        let article = yield Article.findById(id).populate('tag');
+        if (article === null) {
+            return this.end({
+                status: 404,
+                data: 'article not exists',
+            });
+        }
+
+        return this.end({
+            status: 200,
+            data: article.tag,
+        });
+    });
+
+    router.post('/article/:id/tag', function* (next) {
+        let id = this.params.id;
+        let { tagId } = this.request.body;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return this.end({
+                status: 400,
+                data: 'id is invalid',
+            });
+        }
+
+        if (!Array.isArray(tagId)) {
+            tagId = [ tagId ];
+        }
+
+        let article = yield Article.findById(id);
+        if (article === null) {
+            return this.end({
+                status: 404,
+                data: 'article not exists',
+            });
+        }
+
+        for (let tId of tagId) {
+            if (!mongoose.Types.ObjectId.isValid(tId)) {
+                return this.end({
+                    status: 400,
+                    data: `tagId ${tId} is invalid`,
+                });
+            }
+            let tag = yield Tag.findById(tId);
+            if (tag === null) {
+                return this.end({
+                    status: 404,
+                    data: `tag ${tId} not exists`,
+                });
+            }
+
+            article.tag.push(tag._id);
+            tag.article.push(article._id);
+            yield tag.save();
+        }
+        yield article.save();
+
+        return this.end({
+            status: 201,
+            data: yield Article.findById(id).populate('tag'),
+        });
+    });
+
+    router.delete('/article/:id/tag', function* (next) {
+        let id = this.params.id;
+        let { tagId } = this.request.body;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return this.end({
+                status: 400,
+                data: 'id is invalid',
+            });
+        }
+
+        if (!Array.isArray(tagId)) {
+            tagId = [ tagId ];
+        }
+
+        let article = yield Article.findById(id);
+        if (article === null) {
+            return this.end({
+                status: 404,
+                data: 'article not exists',
+            });
+        }
+
+        for (let tId of tagId) {
+            if (!mongoose.Types.ObjectId.isValid(tId)) {
+                return this.end({
+                    status: 400,
+                    data: `tagId ${tId} is invalid`,
+                });
+            }
+            let tag = yield Tag.findById(tId);
+            if (tag === null) {
+                return this.end({
+                    status: 404,
+                    data: `tag ${tId} not exists`,
+                });
+            }
+
+            let tagIndex = article.tag.indexOf(tag._id);
+            if (tagIndex > -1) {
+                article.tag.splice(tagIndex, 1);
+            }
+            let articleIndex = tag.article.indexOf(article._id);
+            if (tagIndex > -1) {
+                tag.article.splice(articleIndex, 1);
+            }
+            yield tag.save();
+        }
+        yield article.save();
+
+        return this.end({
+            status: 201,
+            data: yield Article.findById(id).populate('tag'),
+        });
     });
 
     app.use(router.routes());
