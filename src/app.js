@@ -26,6 +26,9 @@ mongoose.connect(env !== 'test' ? config.database : config.testDatabase, err => 
         console.log('connect database error -->', err);
         process.exit(10601);
     }
+    if (env === 'test') {
+        mongoose.connection.db.dropDatabase();
+    }
     console.log('connect database success');
 });
 
