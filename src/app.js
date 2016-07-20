@@ -26,6 +26,9 @@ mongoose.connect(env !== 'test' ? config.database : config.testDatabase, err => 
         console.log('connect database error -->', err);
         process.exit(10601);
     }
+    if (env === 'test') {
+        mongoose.connection.db.dropDatabase();
+    }
     console.log('connect database success');
 });
 
@@ -85,9 +88,6 @@ fs.readdir(__dirname + '/router', (err, result) => {
         require(`./router/${ file }`)(app);
     }
 });
-
-// static file
-app.use(require('koa-static')('view/'));
 
 // start listener
 app.listen(config.port, () => {
