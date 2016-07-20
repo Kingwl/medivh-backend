@@ -36,6 +36,7 @@ describe('test/router/file.test.js', () => {
                     assert.lengthOf(files, 1, 'files has length of 1');
 
                     for (let file of files) {
+                        assert.isObject(file, 'file is an object');
                         assert.propertyVal(file, '_id', `${now.getFullYear()}-${now.getMonth()}`);
                         assert.propertyVal(file, 'value', 1);
                     }
@@ -56,6 +57,7 @@ describe('test/router/file.test.js', () => {
                     assert.lengthOf(articles, 1, 'articles has length of 1');
 
                     for (let article of articles) {
+                        assert.isObject(article, 'article is an object');
                         assert.propertyVal(article, 'title', testArticleContent.title);
                         assert.propertyVal(article, 'url', testArticleContent.url);
                         assert.propertyVal(article, 'content', testArticleContent.content);
