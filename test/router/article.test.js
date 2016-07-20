@@ -3,13 +3,22 @@ const app = require('../../src/app.js');
 const request = agent(app);
 const assert = require('chai').assert;
 
-describe('test/router/user.test.js', () => {
-    describe('GET /user', () => {
-        it('should return array of users', done => {
-            request.get('/user').end((err, result) => {
+describe('test/router/article.test.js', () => {
+    describe('GET /article', () => {
+        it('should return array of articles', done => {
+            request.get('/article').end((err, result) => {
                 let data = result.res.body;
-                assert.isArray(data, 'should be array of users');
-                assert.equal(0, data.length, 'users length should equal 0');
+                assert.isArray(data, 'response data should be array');
+                assert.equal(0, data.length, 'article length should equal 0');
+                done();
+            });
+        })
+    });
+
+    describe('POST /article', () => {
+        it('should return created article', done => {
+            request.post('/article', { title: 'aaa' }).end((err, result) => {
+                let data = result.res.body;
                 done();
             });
         })
