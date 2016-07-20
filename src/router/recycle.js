@@ -53,10 +53,7 @@ function register(app) {
         };
         yield user.save();
 
-        this.end({
-            state: 204,
-            data: {}
-        });
+        this.end({ state: 204 });
     });
 
     router.post('/recycle/:uid/remove/:id', function* (next) {
@@ -85,10 +82,7 @@ function register(app) {
         yield article.remove();
         yield user.save();
 
-        this.end({
-            state: 204,
-            data: {}
-        });
+        this.end({ state: 204 });
     });
 
     router.post('/recycle/:uid/recovery/:id', function* (next) {
