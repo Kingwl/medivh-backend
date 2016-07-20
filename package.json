@@ -14,7 +14,8 @@
   },
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --recursive",
-    "start": "cross-env NODE_ENV=development node bin/development.js"
+    "start": "cross-env NODE_ENV=development node bin/development.js",
+    "test-co": "cross-env NODE_ENV=test node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- --recursive"
   },
   "repository": {
     "type": "git",
