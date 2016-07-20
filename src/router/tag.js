@@ -8,27 +8,51 @@ const Article = require('../model/article');
 function register(app) {
     router.get('/tag', function* (next) {
         let tags = yield Tag.find();
-        this.body = tags;
+        this.end({
+            status: 200,
+            data: tags
+        });
     });
 
     router.post('/tag', function* (next) {
         let {name} = this.request.body;
-        let newTag = new Tag({ name, article: [] });
+        this.assert(name, 422, 'invalid name');
+
+        let newTag = new Tag({ name });
         yield newTag.save();
-        this.body = newTag;
+
+        this.end({
+            status: 201,
+            data: newTag
+        });
     });
 
     router.get('/tag/:id', function* (next) {
         let {id} = this.params;
-        let tag = yield Tag.findById(id);
-        let articles = yield tag.articles.map(id => Article.findById(id));
-        this.body = articles;
+        this.assert(mongoose.Types.ObjectId.isValid(id), 404, 'id is invalid');
+
+        let tag = yield Tag.findById(id).populate('articles');
+        this.assert(tag, 404, `tag ${id} is not existed`);
+
+        this.end({
+            status: 200,
+            data: tag.articles
+        })
     });
 
     router.delete('/tag/:id', function* (next) {
         let {id} = this.params;
-        let tag = yield Tag.findByIdAndRemove(id);
-        this.body = {};
+        this.assert(mongoose.Types.ObjectId.isValid(id), 404, 'id is invalid');
+
+        let tag = yield Tag.findById(id);
+        this.assert(tag, 404, `tag ${id} is not existed`);
+
+        yield tag.remove();
+        
+        this.end({
+            status: 204,
+            data: {}
+        })
     });
 
     app.use(router.routes());

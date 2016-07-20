@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ReplySchema = new Schema({
-    createTime: { 
-        type: Date, 
-        default: Date.now 
+    createTime: {
+        type: Date,
+        default: Date.now
     },
-    updateTime: { 
-        type: Date, 
-        default: Date.now 
+    updateTime: {
+        type: Date,
+        default: Date.now
     },
 
     name: {

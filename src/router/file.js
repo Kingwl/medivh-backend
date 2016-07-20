@@ -17,12 +17,25 @@ function register(app) {
         };
 
         let files = yield Article.mapReduce(option);
-        this.body = files;
+
+
+        this.end({
+            status: 200,
+            data: files
+        });
     });
 
-    router.get('/file/date/:year/:month', function* (next) {
+    router.get('/file/:year/:month', function* (next) {
         let {year, month} = this.params;
-        
+        this.assert(year, month, 404, 'invalid params');
+
+        let file = yield Article.find({ $where: `this.createTime.getFullYear() == ${year} && this.createTime.getMonth() == ${month}` });
+        console.log(file);
+
+        this.end({
+            status: 200,
+            data: file
+        });
     });
 
     app.use(router.routes());

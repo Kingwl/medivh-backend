@@ -7,44 +7,76 @@ const User = require('../model/user');
 function register(app) {
     router.get('/user', function* (next) {
         let users = yield User.find();
-        this.body = users;
+        this.end({
+            status: 200,
+            data: users
+        })
     });
 
     router.post('/user', function* (next) {
         let {name, encrypted_password, male, age} = this.request.body;
-        let oldUser = yield User.find({ name });
-        if (!oldUser) {
-            let newUser = new User({
-                name,
-                encrypted_password,
-                male,
-                age
-            });
+        this.assert(name && encrypted_password && male && age, 422, 'params is not valid');
 
-            yield newUser.save();
-            this.body = newUser;
-        } else {
-            this.body = { error: 'user was existed' };
-        }
+        let oldUser = yield User.find({ name });
+        this.assert(!oldUser, 422, `user ${name} is existed`);
+
+        let newUser = new User({
+            name,
+            encrypted_password,
+            male,
+            age
+        });
+
+        yield newUser.save();
+
+        this.end({
+            status: 201,
+            data: newUser
+        });
     });
 
     router.get('/user/:id', function* (next) {
         let {id} = this.params;
+        this.assert(mongoose.Types.ObjectId.isValid(uid), 404, 'id is invalid');
+
         let user = yield User.findById(id);
-        this.body = user;
+        this.assert(user, 404, 'user is not existed');
+
+        this.end({
+            status: 200,
+            data: user
+        });
     });
 
     router.put('/user/:id', function* (next) {
         let {id} = this.params;
-        yield User.findByIdAndUpdate(id, this.request.body);
-        let newUser = yield User.findById(id);
-        this.body = newUser;
+        let {name, encrypted_password, male, age} = this.request.body;
+        this.assert(mongoose.Types.ObjectId.isValid(uid), 404, 'id is invalid');
+        this.assert(name && encrypted_password && male && age, 422, 'params is not valid');
+
+        let user = yield User.findById(id);
+        this.assert(user, 404, 'user is not existed');
+
+        user = Object.assign(user, { name, encrypted_password, male, age });
+        yield user.save();
+
+        this.end({
+            status: 201,
+            data: user
+        })
     });
 
     router.delete('/user/:id', function* (next) {
         let {id} = this.params;
-        yield User.findByIdAndRemove(id);
-        this.body = {};
+        this.assert(mongoose.Types.ObjectId.isValid(uid), 404, 'id is invalid');
+
+        let user = yield User.findById(id);
+        this.assert(user, 404, 'user is not existed');
+
+        this.end({
+            status: 204,
+            data: {}
+        });
     });
 
     app.use(router.routes());
