@@ -86,9 +86,6 @@ fs.readdir(__dirname + '/router', (err, result) => {
     }
 });
 
-// static file
-app.use(require('koa-static')('view/'));
-
 // start listener
 app.listen(config.port, () => {
     console.log('start server at http://localhost:' + config.port);
