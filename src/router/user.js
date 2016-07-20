@@ -15,9 +15,10 @@ function register(app) {
 
     router.post('/user', function* (next) {
         let {name, encrypted_password, male, age} = this.request.body;
-        this.assert(name && encrypted_password && male && age, 422, 'params is not valid');
+        this.assert(name && encrypted_password, 422, 'params is not valid');
+        this.assert(typeof male !== 'undefined' && typeof age !== 'undefined', 422, 'params is not valid');
 
-        let oldUser = yield User.find({ name });
+        let oldUser = yield User.findOne({ name });
         this.assert(!oldUser, 422, `user ${name} is existed`);
 
         let newUser = new User({
@@ -52,7 +53,8 @@ function register(app) {
         let {id} = this.params;
         let {name, encrypted_password, male, age} = this.request.body;
         this.assert(mongoose.Types.ObjectId.isValid(uid), 404, 'id is invalid');
-        this.assert(name && encrypted_password && male && age, 422, 'params is not valid');
+        this.assert(name && encrypted_password, 422, 'params is not valid');
+        this.assert(typeof male !== 'undefined' && typeof age !== 'undefined', 422, 'params is not valid');
 
         let user = yield User.findById(id);
         this.assert(user, 404, 'user is not existed');
