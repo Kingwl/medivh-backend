@@ -39,7 +39,8 @@ app.use(end);
 app.use(assert);
 
 // support request log
-app.use(logger());
+if (env !== 'test')
+    app.use(logger());
 
 // error handle
 app.use(function* (next) {
