@@ -195,8 +195,7 @@ function register(app) {
         yield article.save();
 
         return this.end({
-            status: 201,
-            data: yield Article.findById(id).populate('tag'),
+            status: 204,
         });
     });
 
