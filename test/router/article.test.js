@@ -4,6 +4,7 @@ const request = agent(app);
 const assert = require('chai').assert;
 const Article = require('../../src/model/article');
 const Tag = require('../../src/model/tag');
+const Reply = require('../../src/model/reply');
 
 describe('test/router/article.test.js', () => {
     describe('GET /article', () => {
@@ -53,21 +54,21 @@ describe('test/router/article.test.js', () => {
     describe('POST /article', () => {
         it('should return created article', done => {
             request
-            .post('/article')
-            .send({ 
-                title: 'aaa',
-                url: 'bbb',
-                content: 'ccc',
-            })
-            .end((err, result) => {
-                let data = result.res.body;
-                assert.equal(201, result.status, 'response status code should be 201');
-                assert.isObject(data, 'response data should be object');
-                assert.equal('aaa', data.title, 'article.title should equal "aaa"');
-                assert.equal('bbb', data.url, 'article.url should equal "bbb"');
-                assert.equal('ccc', data.content, 'article.content should equal "ccc"');
-                done();
-            });
+                .post('/article')
+                .send({
+                    title: 'aaa',
+                    url: 'bbb',
+                    content: 'ccc',
+                })
+                .end((err, result) => {
+                    let data = result.res.body;
+                    assert.equal(201, result.status, 'response status code should be 201');
+                    assert.isObject(data, 'response data should be object');
+                    assert.equal('aaa', data.title, 'article.title should equal "aaa"');
+                    assert.equal('bbb', data.url, 'article.url should equal "bbb"');
+                    assert.equal('ccc', data.content, 'article.content should equal "ccc"');
+                    done();
+                });
         });
 
         after(done => {
@@ -180,7 +181,9 @@ describe('test/router/article.test.js', () => {
 
         after(done => {
             Article.remove({}, () => {
-                done();
+                Reply.remove({ name: 'a', content: 'b', replyTo: 0 }, () => {
+                    done();
+                })
             });
         });
     });
