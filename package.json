@@ -29,7 +29,9 @@
   "homepage": "https://github.com/Kingwl/Medivh-backend#readme",
   "dependencies": {
     "bluebird": "^3.4.1",
+    "co-mocha": "^1.1.2",
     "cross-env": "^2.0.0",
+    "istanbul": "^0.4.3",
     "koa": "^1.2.0",
     "koa-bodyparser": "^2.2.0",
     "koa-json": "^1.1.3",
