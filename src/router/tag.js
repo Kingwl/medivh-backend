@@ -36,7 +36,7 @@ function register(app) {
 
         this.end({
             status: 200,
-            data: tag.articles
+            data: tag
         })
     });
 
@@ -48,10 +48,23 @@ function register(app) {
         this.assert(tag, 404, `tag ${id} is not existed`);
 
         yield tag.remove();
-        
+
         this.end({
             status: 204,
             data: {}
+        })
+    });
+
+    router.get('/tag/:id/article', function* (next) {
+        let {id} = this.params;
+        this.assert(mongoose.Types.ObjectId.isValid(id), 404, 'id is invalid');
+
+        let tag = yield Tag.findById(id).populate('article');
+        this.assert(tag, 404, `tag ${id} is not existed`);
+
+        this.end({
+            status: 200,
+            data: tag.article
         })
     });
 
