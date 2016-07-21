@@ -23,7 +23,7 @@ function register(app) {
 
         this.end({
             state: 200,
-            data: body
+            data: reply
         });
     });
 
@@ -34,7 +34,7 @@ function register(app) {
         this.assert(name && content, 404, 'invalid params');
 
         let reply = yield Reply.findById(id);
-        reply = Object.assing(reply, { name, content });
+        reply = Object.assign(reply, { name, content });
 
         yield reply.save();
 
@@ -54,8 +54,7 @@ function register(app) {
         reply.remove();
 
         this.end({
-            state: 204,
-            data: {}
+            state: 204
         });
     });
 
