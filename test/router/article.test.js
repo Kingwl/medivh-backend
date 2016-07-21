@@ -235,7 +235,9 @@ describe('test/router/article.test.js', () => {
 
         after(done => {
             Article.remove({}, () => {
-                done();
+                Tag.remove({}, () => {
+                    done();
+                })
             });
         });
     });
@@ -264,7 +266,9 @@ describe('test/router/article.test.js', () => {
 
         after(done => {
             Article.remove({}, () => {
-                done();
+                Tag.remove({}, () => {
+                    done();
+                })
             });
         });
     });
@@ -292,7 +296,9 @@ describe('test/router/article.test.js', () => {
 
         after(done => {
             Article.remove({}, () => {
-                done();
+                Tag.remove({}, () => {
+                    done();
+                })
             });
         });
     });
@@ -332,7 +338,9 @@ describe('test/router/article.test.js', () => {
 
         after(done => {
             Article.remove({}, () => {
-                done();
+                Tag.remove({}, () => {
+                    done();
+                })
             });
         });
     });
