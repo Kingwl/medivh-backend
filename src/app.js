@@ -13,8 +13,8 @@ const koa = require('koa');
 const json = require('koa-json');
 const logger = require('koa-logger');
 const bodyParser = require('koa-bodyparser');
-const end = require('./util/response.js');
-const assert = require('./util/assert.js');
+const end = require('./middleware/response.js');
+const assert = require('./middleware/assert.js');
 const app = koa();
 
 // use native Promise
