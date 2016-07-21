@@ -3,15 +3,15 @@
 const router = require('koa-router')();
 
 function register(app) {
-    router.get('/auth', function* (next) {
+    router.get('/auth', /* istanbul ignore next */ function* (next) {
 
     });
 
-    router.post('/auth', function* (next) {
+    router.post('/auth', /* istanbul ignore next */ function* (next) {
 
     });
 
-    router.delete('/auth', function* (next) {
+    router.delete('/auth', /* istanbul ignore next */ function* (next) {
 
     });
 
