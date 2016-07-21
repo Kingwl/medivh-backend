@@ -9,6 +9,7 @@ const assert = require('chai').assert;
 
 const Article = require('../../src/model/article');
 const User = require('../../src/model/user');
+const Tag = require('../../src/model/tag');
 
 describe('test/router/recycle.test.js', () => {
     const testArticleData = {
@@ -23,19 +24,30 @@ describe('test/router/recycle.test.js', () => {
         male: 0,
         age: 1
     };
+    const testTagData = {
+        name: 'testTag'
+    };
+
     let testArticle = null;
     let testUser = null;
+    let testTag = null;
 
     beforeEach(function* () {
         testArticle = new Article(testArticleData);
         testUser = new User(testUserData);
+        testTag = new Tag(testTagData);
 
+        testTag.article.push(testArticle._id);
+        testArticle.tag.push(testTag._id);
         testUser.articles.push(testArticle._id);
+
+        yield testTag.save();
         yield testArticle.save();
         yield testUser.save();
     });
 
     afterEach(function* () {
+        yield testTag.remove();
         yield testArticle.remove();
         yield testUser.remove();
     })
