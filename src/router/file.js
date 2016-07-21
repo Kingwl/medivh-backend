@@ -11,13 +11,12 @@ function register(app) {
                 emit(`${this.createTime.getFullYear()}-${this.createTime.getMonth()}`, 1);
             },
 
-            recude: function (k, values) {
+            reduce: function (k, values) {
                 return values.length;
             }
         };
 
         let files = yield Article.mapReduce(option);
-
 
         this.end({
             status: 200,
@@ -30,7 +29,6 @@ function register(app) {
         this.assert(year, month, 404, 'invalid params');
 
         let file = yield Article.find({ $where: `this.createTime.getFullYear() == ${year} && this.createTime.getMonth() == ${month}` });
-        console.log(file);
 
         this.end({
             status: 200,
