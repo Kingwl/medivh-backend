@@ -6,7 +6,7 @@ if (env === 'development') {
 } 
 
 const fs = require('fs');
-const config = require('../config/config.js');
+const config = env === 'ci' ? require('../config/config.ci.js') : require('../config/config.js');
 const mongoose = require('mongoose');
 
 const koa = require('koa');
