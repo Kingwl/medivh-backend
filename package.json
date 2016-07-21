@@ -13,9 +13,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "cross-env NODE_ENV=test mocha --recursive",
     "start": "cross-env NODE_ENV=development node bin/development.js",
-    "test-co": "cross-env NODE_ENV=test node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- --recursive"
+    "test": "cross-env NODE_ENV=test node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --recursive && node bin/test.js"
   },
   "repository": {
     "type": "git",
@@ -41,7 +40,10 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chokidar": "^1.6.0",
+    "co-mocha": "^1.1.2",
+    "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
+    "opener": "^1.4.1",
     "request": "^2.73.0",
     "supertest": "^1.2.0",
     "supertest-koa-agent": "^0.2.1"

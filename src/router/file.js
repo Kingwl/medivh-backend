@@ -6,18 +6,14 @@ const Article = require('../model/article');
 function register(app) {
     router.get('/file', function* (next) {
         let articles = yield Article.find();
-        let option = {
-            map: function () {
-                emit(`${this.createTime.getFullYear()}-${this.createTime.getMonth()}`, 1);
-            },
+        this.assert(articles.length !== 0, 400, 'no article exists');
 
-            reduce: function (k, values) {
-                return values.length;
-            }
+        let option = {
+            map: 'function () { emit(`${this.createTime.getFullYear()}-${this.createTime.getMonth()}`, 1) }',
+            reduce: 'function (k, values) { return values.length }'
         };
 
         let files = yield Article.mapReduce(option);
-
         this.end({
             status: 200,
             data: files

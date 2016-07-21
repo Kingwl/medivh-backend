@@ -39,7 +39,8 @@ app.use(end);
 app.use(assert);
 
 // support request log
-app.use(logger());
+if (env !== 'test')
+    app.use(logger());
 
 // error handle
 app.use(function* (next) {
@@ -62,7 +63,7 @@ app.use(function* (next) {
         console.log('error --> ', message);
         return this.end({
             status: 500,
-            data: 'server error',
+            data: env === 'development' ? message : 'server error',
         })
     }
 })
