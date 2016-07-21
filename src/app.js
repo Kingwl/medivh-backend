@@ -63,7 +63,7 @@ app.use(function* (next) {
         console.log('error --> ', message);
         return this.end({
             status: 500,
-            data: 'server error',
+            data: env === 'development' ? message : 'server error',
         })
     }
 })
