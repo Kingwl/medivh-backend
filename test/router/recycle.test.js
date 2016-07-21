@@ -1,7 +1,6 @@
-var mocha = require('mocha')
-var coMocha = require('co-mocha')
-
-coMocha(mocha)
+var mocha = require('mocha');
+var coMocha = require('co-mocha');
+coMocha(mocha);
 
 const agent = require('supertest-koa-agent');
 const app = require('../../src/app.js');

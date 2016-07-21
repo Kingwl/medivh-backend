@@ -1,3 +1,7 @@
+const mocha = require('mocha');
+const coMocha = require('co-mocha');
+coMocha(mocha);
+
 const agent = require('supertest-koa-agent');
 const app = require('../../src/app.js');
 const request = agent(app);
