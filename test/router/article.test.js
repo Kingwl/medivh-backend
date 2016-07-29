@@ -19,6 +19,18 @@ describe('test/router/article.test.js', () => {
         });
     });
 
+    describe('GET /article/full', () => {
+        it('should return array of articles (populate reply and tag), and array length equal 0', done => {
+            request.get('/article/full').end((err, result) => {
+                let data = result.res.body;
+                assert.equal(200, result.status, 'response status code should be 200');
+                assert.isArray(data, 'response data should be array');
+                assert.equal(0, data.length, 'article length should equal 0');
+                done();
+            });
+        });
+    });
+
     describe('GET /article/:id', () => {
         let article = null;
 

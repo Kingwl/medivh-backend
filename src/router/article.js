@@ -16,6 +16,14 @@ function register(app) {
         });
     });
 
+    router.get('/article/full', function* () {
+        let articles = yield Article.find().populate('reply tag');
+        this.end({
+            status: 200,
+            data: articles,
+        });
+    });
+
     router.post('/article', function* (next) {
         let { title, url, content } = this.request.body;
         let newArticle = new Article({
